@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace AdbHostsSetting
+namespace AndroidHostsEditor
 {
     public partial class MainForm : Form
     {
@@ -56,7 +56,7 @@ namespace AdbHostsSetting
         private void TimerRefreshDeviceList(object o)
         {
             List<ListViewItem> l = new List<ListViewItem>();
-            foreach (string name in ADB_SETTING.getSingleton(this).getDevices())
+            foreach (string name in ADB_UTIL.getSingleton(this).getDevices())
             {
                 string[] items = name.Split('\t');
                 l.Add(new ListViewItem(new string[] { items[0], items[1] }));
@@ -72,7 +72,7 @@ namespace AdbHostsSetting
         delegate void TimerDelegateAddList(List<ListViewItem> items);
         private void addList(List<ListViewItem> items)
         {
-            ADB_SETTING.getSingleton(this).init();
+            ADB_UTIL.getSingleton(this).init();
             adbList.Items.Clear();
             foreach(ListViewItem item in items){
                 adbList.Items.Add(item);
@@ -87,7 +87,7 @@ namespace AdbHostsSetting
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            LADBPath.Text = ADB_SETTING.getSingleton(this).PATH;
+            LADBPath.Text = ADB_UTIL.getSingleton(this).PATH;
         }
 
         private void adbList_SelectedIndexChanged(object sender, EventArgs e)
@@ -97,12 +97,12 @@ namespace AdbHostsSetting
             ListViewItem item = _[0];
             if (item == null) return;
             LCurrentDevice.Text = TAG_CURRENT_DEVICE + item.SubItems[0].Text;
-            ADB_SETTING.getSingleton(this).DEVICE_NAME = item.SubItems[0].Text;
+            ADB_UTIL.getSingleton(this).DEVICE_NAME = item.SubItems[0].Text;
         }
 
         private void bRunOpenHosts_Click(object sender, EventArgs e)
         {
-            ADB_SETTING adbSetting = ADB_SETTING.getSingleton(this);
+            ADB_UTIL adbSetting = ADB_UTIL.getSingleton(this);
 
             LSystemBlock.Text = adbSetting.getSystemDirBlock();
 
@@ -127,36 +127,36 @@ namespace AdbHostsSetting
 
         private void bSaveHostsFromPC_Click(object sender, EventArgs e)
         {
-            ADB_SETTING adbSetting = ADB_SETTING.getSingleton(this);
+            ADB_UTIL adbSetting = ADB_UTIL.getSingleton(this);
             string ret = adbSetting.pushHostsfile();
             LPushFiles.Text = ret.Equals("")?"PUSH OK":ret;
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            ADB_SETTING.getSingleton(this).deleteLocalHostsFile();
+            ADB_UTIL.getSingleton(this).deleteLocalHostsFile();
         }
 
         private void bOpenHostsFromAndroid_Click(object sender, EventArgs e)
         {
-            debugText.Text = ADB_SETTING.getSingleton(this).catHostsFile();
+            debugText.Text = ADB_UTIL.getSingleton(this).catHostsFile();
         }
 
         private void bSelectADBPath_Click(object sender, EventArgs e)
         {
-            LADBPath.Text = ADB_SETTING.getSingleton(this).openFile();
+            LADBPath.Text = ADB_UTIL.getSingleton(this).openFile();
         }
 
         private void bRefreshDevices_Click(object sender, EventArgs e)
         {
             List<ListViewItem> l = new List<ListViewItem>();
-            foreach (string name in ADB_SETTING.getSingleton(this).getDevices())
+            foreach (string name in ADB_UTIL.getSingleton(this).getDevices())
             {
                 string[] items = name.Split('\t');
                 l.Add(new ListViewItem(new string[] { items[0], items[1] }));
             }
 
-            ADB_SETTING.getSingleton(this).init();
+            ADB_UTIL.getSingleton(this).init();
             adbList.Items.Clear();
             foreach (ListViewItem item in l)
             {
@@ -168,16 +168,16 @@ namespace AdbHostsSetting
     }
 
 
-    class ADB_SETTING
+    class ADB_UTIL
     {
         private string DEFAULT_ADB_PATH = "F:\\android-sdk\\sdk\\platform-tools\\adb.exe";
         private string SYSTEM_DIR = "/system";
         private string EXECUTABLE_DIR = Application.StartupPath;
-        static ADB_SETTING instance = new ADB_SETTING();
+        static ADB_UTIL instance = new ADB_UTIL();
         public string PATH { get;private set; }
         public string DEVICE_NAME { get; set; }
         public string SYSTEM_PATH { get; private set; }
-        private ADB_SETTING()
+        private ADB_UTIL()
         {
             this.PATH = DEFAULT_ADB_PATH;
             init();
@@ -187,7 +187,7 @@ namespace AdbHostsSetting
             this.DEVICE_NAME = "";
             this.SYSTEM_PATH = "";
         }
-        public static ADB_SETTING getSingleton(Form context)
+        public static ADB_UTIL getSingleton(Form context)
         {
             return instance;
         }

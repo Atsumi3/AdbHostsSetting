@@ -1,4 +1,4 @@
-﻿namespace AdbHostsSetting
+﻿namespace AndroidHostsEditor
 {
     partial class MainForm
     {
@@ -217,7 +217,7 @@
             this.Controls.Add(this.bSaveHostsFromPC);
             this.Controls.Add(this.adbList);
             this.Name = "Form1";
-            this.Text = "AdbHostsSetting";
+            this.Text = "AndroidHostsEditor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
