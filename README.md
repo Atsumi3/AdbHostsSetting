@@ -1,4 +1,4 @@
-# AdbHostsSetting  
+# AndroidHostsEditor 
 Android 端末のHostsファイルを編集するためのソフトウェアです  
   
 ## 説明
