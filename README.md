@@ -1,5 +1,6 @@
 # AndroidHostsEditor 
-Android 端末のHostsファイルを編集するためのソフトウェアです  
+Android 端末のHostsファイルを編集するためのソフトウェアです 
+エミュレータ等からローカル環境で立てたサーバへ接続する際に使えたりします  
   
 ## 説明
 Android のHostsファイルを書き換える事が出来ます  
